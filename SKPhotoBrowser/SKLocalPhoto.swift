@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 // MARK: - SKLocalPhoto
 open class SKLocalPhoto: NSObject, SKPhotoProtocol {
     
-    open var underlyingImage: UIImage!
+    open var underlyingImage: SDAnimatedImage!
     open var photoURL: String!
     open var contentMode: UIView.ContentMode = .scaleToFill
     open var shouldCachePhotoURLImage: Bool = false
@@ -27,7 +28,7 @@ open class SKLocalPhoto: NSObject, SKPhotoProtocol {
         photoURL = url
     }
     
-    convenience init(url: String, holder: UIImage?) {
+    convenience init(url: String, holder: SDAnimatedImage?) {
         self.init()
         photoURL = url
         underlyingImage = holder
@@ -46,7 +47,7 @@ open class SKLocalPhoto: NSObject, SKPhotoProtocol {
             if FileManager.default.fileExists(atPath: photoURL) {
                 if let data = FileManager.default.contents(atPath: photoURL) {
                     self.loadUnderlyingImageComplete()
-                    if let image = UIImage(data: data) {
+                    if let image = SDAnimatedImage(data: data) {
                         self.underlyingImage = image
                         self.loadUnderlyingImageComplete()
                     }
@@ -64,7 +65,7 @@ open class SKLocalPhoto: NSObject, SKPhotoProtocol {
         return SKLocalPhoto(url: url)
     }
     
-    open class func photoWithImageURL(_ url: String, holder: UIImage?) -> SKLocalPhoto {
+    open class func photoWithImageURL(_ url: String, holder: SDAnimatedImage?) -> SKLocalPhoto {
         return SKLocalPhoto(url: url, holder: holder)
     }
 }

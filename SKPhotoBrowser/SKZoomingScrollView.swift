@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 open class SKZoomingScrollView: UIScrollView {
     var captionView: SKCaptionView!
@@ -171,7 +172,7 @@ open class SKZoomingScrollView: UIScrollView {
         }
     }
     
-    open func displayImage(_ image: UIImage) {
+    open func displayImage(_ image: SDAnimatedImage) {
         // image
         imageView.image = image
         imageView.contentMode = photo.contentMode
