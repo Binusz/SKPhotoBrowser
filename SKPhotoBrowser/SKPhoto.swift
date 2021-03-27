@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 @objc public protocol SKPhotoProtocol: NSObjectProtocol {
     var index: Int { get set }
-    var underlyingImage: UIImage! { get }
+    var underlyingImage: SDAnimatedImage! { get }
     var caption: String? { get }
     var contentMode: UIView.ContentMode { get set }
     func loadUnderlyingImageAndNotify()
@@ -20,7 +21,7 @@ import UIKit
 // MARK: - SKPhoto
 open class SKPhoto: NSObject, SKPhotoProtocol {
     open var index: Int = 0
-    open var underlyingImage: UIImage!
+    open var underlyingImage: SDAnimatedImage!
     open var caption: String?
     open var contentMode: UIView.ContentMode = .scaleAspectFill
     open var shouldCachePhotoURLImage: Bool = false
@@ -30,7 +31,7 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
         super.init()
     }
     
-    convenience init(image: UIImage) {
+    convenience init(image: SDAnimatedImage) {
         self.init()
         underlyingImage = image
     }
@@ -40,7 +41,7 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
         photoURL = url
     }
     
-    convenience init(url: String, holder: UIImage?) {
+    convenience init(url: String, holder: SDAnimatedImage?) {
         self.init()
         photoURL = url
         underlyingImage = holder
@@ -57,11 +58,11 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
         if SKCache.sharedCache.imageCache is SKRequestResponseCacheable {
             let request = URLRequest(url: URL(string: photoURL)!)
             if let img = SKCache.sharedCache.imageForRequest(request) {
-                underlyingImage = img
+                underlyingImage = img as? SDAnimatedImage
             }
         } else {
             if let img = SKCache.sharedCache.imageForKey(photoURL) {
-                underlyingImage = img
+                underlyingImage = img as? SDAnimatedImage
             }
         }
     }
@@ -83,7 +84,7 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
                     return
                 }
 
-                if let data = data, let response = response, let image = UIImage(data: data) {
+                if let data = data, let response = response, let image = SDAnimatedImage(data: data) {
                     if self.shouldCachePhotoURLImage {
                         if SKCache.sharedCache.imageCache is SKRequestResponseCacheable {
                             SKCache.sharedCache.setImageData(data, response: response, request: task?.originalRequest)
@@ -110,7 +111,7 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
 // MARK: - Static Function
 
 extension SKPhoto {
-    public static func photoWithImage(_ image: UIImage) -> SKPhoto {
+    public static func photoWithImage(_ image: SDAnimatedImage) -> SKPhoto {
         return SKPhoto(image: image)
     }
     
@@ -118,7 +119,7 @@ extension SKPhoto {
         return SKPhoto(url: url)
     }
     
-    public static func photoWithImageURL(_ url: String, holder: UIImage?) -> SKPhoto {
+    public static func photoWithImageURL(_ url: String, holder: SDAnimatedImage?) -> SKPhoto {
         return SKPhoto(url: url, holder: holder)
     }
 }

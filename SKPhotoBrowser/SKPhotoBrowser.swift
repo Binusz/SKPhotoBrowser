@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 public let SKPHOTO_LOADING_DID_END_NOTIFICATION = "photoLoadingDidEndNotification"
 
@@ -75,7 +76,7 @@ open class SKPhotoBrowser: UIViewController {
     }
     
     @available(*, deprecated)
-    public convenience init(originImage: UIImage, photos: [SKPhotoProtocol], animatedFromView: UIView) {
+    public convenience init(originImage: SDAnimatedImage, photos: [SKPhotoProtocol], animatedFromView: UIView) {
         self.init(nibName: nil, bundle: nil)
         self.photos = photos
         self.photos.forEach { $0.checkCache() }

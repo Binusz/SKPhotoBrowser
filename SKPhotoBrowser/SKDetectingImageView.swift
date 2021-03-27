@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import SDWebImage
 
 @objc protocol SKDetectingImageViewDelegate {
     func handleImageViewSingleTap(_ touchPoint: CGPoint)
     func handleImageViewDoubleTap(_ touchPoint: CGPoint)
 }
 
-class SKDetectingImageView: UIImageView {
+class SKDetectingImageView: SDAnimatedImageView {
     weak var delegate: SKDetectingImageViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
